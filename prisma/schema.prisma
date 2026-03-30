@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  firstName   String
+  lastName    String
+  email       String     @unique
+  role        UserRole
+  status      UserStatus @default(ACTIVE)
+  password    String
+  otp         String?
+  otpExpireAt DateTime?
+  isDeleted   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("users")
+}
+
+model Category {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  parentId String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+model Product {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  categoryId String @db.ObjectId
+  category Category @relation(fields: [categoryId], references: [id])
+  price Float 
+  stockQuantity Int @default(0)
+  minimumStockThreshold Int @default(5)
+  status ProductStatus @default(ACTIVE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  orderProducts OrderProducts[]
+  restockQueues           RestockQueue[] 
+
+  @@map("products")
+}
+
+model OrderProducts {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  orderId   String   @db.ObjectId
+  productId String   @db.ObjectId
+
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("order_products")
+}
+
+model Order {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  customerName String
+  products      OrderProducts[]
+  totalPrice Float
+  status OrderStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("orders")
+}
+
+model ActivityLog {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  activity    String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model RestockQueue {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  productId String @db.ObjectId
+  product Product @relation(fields: [productId], references: [id])
+  priority RestockPriority
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("restock_queue")
+
+}
+
+
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
+
+enum ProductStatus {
+  ACTIVE
+  STOCK_OUT
+}
+
+enum RestockPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
