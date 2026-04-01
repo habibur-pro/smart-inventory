@@ -4,6 +4,8 @@ import { AuthRoutes } from "../modules/Auth/auth.routes";
 import { ImageRoutes } from "../modules/Image/Image.route";
 import { ProductRoutes } from "../modules/Product/product.route";
 import { UserRoutes } from "../modules/User/user.route";
+import { CategoryRoutes } from "../modules/Category/category.route";
+import { OrderRoutes } from "../modules/Order/order.route";
 
 // import { paymentRoutes } from "../modules/Payment/payment.route";
 
@@ -24,8 +26,16 @@ const moduleRoutes = [
     route: ImageRoutes,
   },
   {
+    path: "/categories",
+    route: CategoryRoutes,
+  },
+  {
     path: "/products",
     route: ProductRoutes,
+  },
+  {
+    path: "/orders",
+    route: OrderRoutes,
   },
 ];
 
