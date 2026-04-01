@@ -41,6 +41,7 @@ model Product {
   categoryId String @db.ObjectId
   category Category @relation(fields: [categoryId], references: [id])
   price Float 
+  images String[]
   stockQuantity Int @default(0)
   minimumStockThreshold Int @default(5)
   status ProductStatus @default(ACTIVE)

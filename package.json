@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-prisma-starter",
+  "name": "smart-inventory",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {

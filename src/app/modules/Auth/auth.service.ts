@@ -1,6 +1,5 @@
 import { User, UserStatus } from "@prisma/client";
 import * as bcrypt from "bcrypt";
-import * as crypto from "crypto";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
 import config from "../../../config";
@@ -45,7 +44,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
       lastName: userData.lastName,
       email: userData.email,
       role: userData.role,
-      photo: userData.photo || null,
     },
     config.jwt.jwt_secret as Secret,
     (config.jwt.expires_in as string) || "7d",
@@ -58,7 +56,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
       lastName: userData.lastName,
       email: userData.email,
       role: userData.role,
-      photo: userData.photo || null,
     },
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string,
