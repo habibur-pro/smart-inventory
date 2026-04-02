@@ -6,6 +6,7 @@ import { ProductRoutes } from "../modules/Product/product.route";
 import { UserRoutes } from "../modules/User/user.route";
 import { CategoryRoutes } from "../modules/Category/category.route";
 import { OrderRoutes } from "../modules/Order/order.route";
+import { RestockQueueRoutes } from "../modules/RestockQueue/restockQueue.route";
 
 // import { paymentRoutes } from "../modules/Payment/payment.route";
 
@@ -36,6 +37,10 @@ const moduleRoutes = [
   {
     path: "/orders",
     route: OrderRoutes,
+  },
+  {
+    path: "/restock-queue",
+    route: RestockQueueRoutes,
   },
 ];
 
